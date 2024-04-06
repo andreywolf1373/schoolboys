@@ -79,7 +79,7 @@ const StudentTable = ({ students, onAbsentChange }) => {
               student.SecondName &&
               student.LastName && (
                 <TableRow key={student.Id}>
-                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{student.Id}</TableCell>
                   <TableCell component="th" scope="row">
                     <Link
                       to={`/student/%20${student.FirstName}%20${student.SecondName}%20${student.LastName}`}

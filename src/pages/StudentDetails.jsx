@@ -1,7 +1,5 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import { useQuery } from "react-query";
-import axios from "axios";
 
 const StudentDetails = () => {
   const { id } = useParams();
