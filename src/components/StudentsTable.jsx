@@ -12,9 +12,9 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useMutation } from "react-query";
 
+const BASE_URL = "http://94.131.246.109:5555/v1";
+const CLASS_KEY = "/2/";
 const StudentTable = ({ students }) => {
-  const BASE_URL = "http://94.131.246.109:5555/v1";
-  const CLASS_KEY = "/2/";
   const [columns, setColumns] = useState([]);
   const [absences, setAbsences] = useState([]);
   const filteredStudents = students.filter((student) => {
