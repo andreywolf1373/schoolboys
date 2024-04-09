@@ -13,16 +13,25 @@ import axios from "axios";
 import { useMutation } from "react-query";
 
 const StudentTable = ({ students }) => {
+  const BASE_URL = "http://94.131.246.109:5555/v1";
+  const CLASS_KEY = "/2/";
   const [columns, setColumns] = useState([]);
   const [absences, setAbsences] = useState([]);
+  const filteredStudents = students.filter((student) => {
+    return (
+      student.FirstName !== null &&
+      student.SecondName !== null &&
+      student.LastName !== null
+    );
+  });
   useEffect(() => {
     axios
-      .get("http://94.131.246.109:5555/v1/2/Column")
+      .get(`${BASE_URL}${CLASS_KEY}Column`)
       .then((res) => setColumns(res.data.Items))
       .catch((error) => console.error("Error fetching columns:", error));
 
     axios
-      .get("http://94.131.246.109:5555/v1/2/Rate")
+      .get(`${BASE_URL}${CLASS_KEY}Rate`)
       .then((res) => setAbsences(res.data.Items))
       .catch((error) => console.error("Error fetching absences:", error));
   }, [columns, absences]);
@@ -35,10 +44,10 @@ const StudentTable = ({ students }) => {
   };
 
   const setAbsenceStatus = useMutation((data) => {
-    axios.post("http://94.131.246.109:5555/v1/2/Rate", data);
+    axios.post(`${BASE_URL}${CLASS_KEY}Rate`, data);
   });
   const unsetAbsenceStatus = useMutation((data) =>
-    axios.post("http://94.131.246.109:5555/v1/2/UnRate", data)
+    axios.post(`${BASE_URL}${CLASS_KEY}UnRate`, data)
   );
 
   const toggleAbsenceStatus = (studentId, columnId) => {
@@ -59,14 +68,6 @@ const StudentTable = ({ students }) => {
       });
     }
   };
-
-  const filteredStudents = students.filter((student) => {
-    return (
-      student.FirstName !== null &&
-      student.SecondName !== null &&
-      student.LastName !== null
-    );
-  });
 
   return (
     <TableContainer component={Paper}>
