@@ -10,10 +10,9 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
 import { useMutation } from "react-query";
 
-const StudentTable = ({ students, onAbsentChange }) => {
+const StudentTable = ({ students }) => {
   const [columns, setColumns] = useState([]);
   const [absences, setAbsences] = useState([]);
   useEffect(() => {
@@ -50,6 +49,7 @@ const StudentTable = ({ students, onAbsentChange }) => {
       unsetAbsenceStatus.mutate({
         SchoolboyId: studentId,
         ColumnId: columnId,
+        Title: "",
       });
     } else {
       setAbsenceStatus.mutate({
@@ -59,6 +59,14 @@ const StudentTable = ({ students, onAbsentChange }) => {
       });
     }
   };
+
+  const filteredStudents = students.filter((student) => {
+    return (
+      student.FirstName !== null &&
+      student.SecondName !== null &&
+      student.LastName !== null
+    );
+  });
 
   return (
     <TableContainer component={Paper}>
@@ -73,32 +81,26 @@ const StudentTable = ({ students, onAbsentChange }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {students.map(
-            (student, index) =>
-              student.FirstName &&
-              student.SecondName &&
-              student.LastName && (
-                <TableRow key={student.Id}>
-                  <TableCell>{student.Id}</TableCell>
-                  <TableCell component="th" scope="row">
-                    <Link
-                      to={`/student/%20${student.FirstName}%20${student.SecondName}%20${student.LastName}`}
-                    >
-                      {student.FirstName} {student.SecondName}{" "}
-                      {student.LastName}
-                    </Link>
-                  </TableCell>
-                  {columns.map((column) => (
-                    <TableCell
-                      key={column.Id}
-                      onClick={() => toggleAbsenceStatus(student.Id, column.Id)}
-                    >
-                      {handleAbsenceStatus(student.Id, column.Id)}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              )
-          )}
+          {filteredStudents.map((student, index) => (
+            <TableRow key={student.Id}>
+              <TableCell>{index + 1}</TableCell>
+              <TableCell component="th" scope="row">
+                <Link
+                  to={`/student/%20${student.FirstName}%20${student.SecondName}%20${student.LastName}`}
+                >
+                  {student.FirstName} {student.SecondName} {student.LastName}
+                </Link>
+              </TableCell>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.Id}
+                  onClick={() => toggleAbsenceStatus(student.Id, column.Id)}
+                >
+                  {handleAbsenceStatus(student.Id, column.Id)}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </TableContainer>
