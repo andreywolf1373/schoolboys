@@ -12,3 +12,7 @@ a:link:visited {
   color: #000;
   text-decoration: none;
 }
+
+.MuiTableContainer-root {
+  border: 4px, #000;
+}
